@@ -232,7 +232,7 @@ def signal_event(event: Event):
     {'action': 'long',
     'symbol': 'ETHUSDT', 'exchange': 'binance_future',
     'price': '3054.66', 'close': '3054.66',
-    'passphrase': 'your password'}
+    'passphrase': 'btc_secret_999'}
 
     :return: None
     """
