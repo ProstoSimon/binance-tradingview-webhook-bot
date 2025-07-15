@@ -32,23 +32,25 @@ def webhook():
 
 def future_trade(data: dict):
 
-    symbol = data.get('symbol', None)
-    action = data.get('action', '').upper()
-    strategy_name = data.get('strategy_name', None)
+    symbol = data.get('symbol', 'BTCUSDT')
+    action = data.get('action', 'BUY').upper()
 
-    if not strategy_name:
+    leverage = 20
+    usdt_amount = 15
+
+    # Получаем цену BTC
+    try:
+        response = requests.get(f"https://fapi.binance.com/fapi/v1/ticker/price?symbol={symbol}")
+        price = float(response.json()["price"])
+    except Exception as e:
+        print(f"Ошибка при получении цены: {e}")
         return
 
-    strategy_config = config.strategies.get(strategy_name, None)
-    if not strategy_config:
-        return
+    quantity = round((usdt_amount * leverage) / price, 3)
+    current_pos = 0
+    trading_volume = quantity
 
-    current_pos = strategy_config.get('pos', 0)
-    trading_volume = strategy_config.get('trading_volume', 0)
-
-    # print('strategy name', strategy_name, 'action: ', action, "current_pos: ", current_pos, "trading_volume: ", trading_volume)
-    # print('order id :', future_strategy_order_dict.get(strategy_name))
-    price = str(data.get('price', '0'))
+    print(f"Открытие позиции: {action}, Символ: {symbol}, Цена: {price}, Объём: {quantity}")
 
     if action == 'EXIT':
 
