@@ -270,4 +270,6 @@ if __name__ == '__main__':
     event_engine.register(EVENT_TIMER, timer_event)
     event_engine.register(EVENT_SIGNAL, signal_event)
 
-    app.run(host='0.0.0.0', port=10000, debug=False)
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)
